@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
-import 'package:dokan/data/exceptions/customExceptions.dart';
+import 'package:dokan/core/exceptions/customExceptions.dart';
 import 'package:http/http.dart' as http;
 
 
@@ -27,7 +27,7 @@ class APIManager {
     } on SocketException catch (e) {
       log('APIManager.postAPICallWithHeader: $e');
 
-      throw ServerException('Socket Exception in postAPICallWithHeader :${e.toString()}');
+      throw ServerFailure('Socket Exception in postAPICallWithHeader :${e.toString()}');
     } catch (e) {
       throw ('Exception in postAPICallWithHeader :${e.toString()}');
     }
@@ -46,7 +46,7 @@ class APIManager {
 
       responseJson = apiResponse(response);
     } on SocketException catch (e) {
-      throw ServerException('Socket Exception in getWithHeader :${e.toString()}');
+      throw ServerFailure('Socket Exception in getWithHeader :${e.toString()}');
     } catch (e) {
       throw ('Exception in getWithHeader :${e.toString()}');
     }
@@ -61,13 +61,13 @@ class APIManager {
         var responseJson = jsonDecode(response.body);
         return responseJson;
       case 400:
-        throw BadRequestException(response.body.toString());
+        throw BadRequestFailure(response.body.toString());
       case 401:
       case 403:
-        throw UnauthorisedException(response.body.toString());
+        throw UnauthorisedFailure(response.body.toString());
       case 500:
       default:
-        throw ServerException(response.body.toString());
+        throw ServerFailure(response.body.toString());
     }
   }
 }

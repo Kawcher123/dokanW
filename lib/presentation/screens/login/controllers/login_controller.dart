@@ -6,10 +6,8 @@ class LoginController extends GetxController {
 
   GlobalKey<FormState> signInFormKey = GlobalKey<FormState>();
   final passObscure = false.obs;
-  String? phone;
+  String? email;
   String? password;
-  final countryCode = 'bd +880'.obs;
-  TextEditingController phoneNumberController = TextEditingController();
   @override
   void onInit() {
     super.onInit();

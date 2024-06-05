@@ -24,7 +24,8 @@ class HomeView extends GetView<HomeController> {
               ))
         ],
       ),
-      body: ListView(
+      body: Obx(() => controller.productsLoaded.isTrue?
+      ListView(
         primary: true,
         children: [
           const ProductFilterWidget(),
@@ -39,14 +40,16 @@ class HomeView extends GetView<HomeController> {
                 mainAxisSpacing: 1.0,
                 childAspectRatio: 0.65,
               ),
-              itemCount: 6, // Number of items in the GridView
-              itemBuilder: (context, gridIndex) {
-                return const ProductCardWidget();
+              itemCount: controller.productList.length, // Number of items in the GridView
+              itemBuilder: (context, index) {
+                return  ProductCardWidget(productEntity: controller.productList[index]);
               },
             ),
           ),
         ],
-      ),
+      )
+      :
+      const Center(child: CircularProgressIndicator())),
     );
   }
 }

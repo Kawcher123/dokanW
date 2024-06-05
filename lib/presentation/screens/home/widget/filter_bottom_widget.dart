@@ -95,6 +95,7 @@ class FilterBottomSheetWidget extends GetWidget<HomeController> {
                         onPressed: ()
                         {
                           Get.back();
+                          controller.applyFilters();
                         },
                         radius: 10,
                         hasShadow: true,

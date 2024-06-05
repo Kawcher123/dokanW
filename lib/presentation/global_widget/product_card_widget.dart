@@ -1,3 +1,4 @@
+import 'package:dokan/domain/entities/product_entity.dart';
 import 'package:dokan/presentation/global_widget/image_widget.dart';
 import 'package:dokan/utils/constant.dart';
 import 'package:flutter/cupertino.dart';
@@ -7,8 +8,8 @@ import 'package:get/get.dart';
 import '../common_ui/ui.dart';
 
 class ProductCardWidget extends StatelessWidget {
-
-  const ProductCardWidget({super.key});
+final ProductEntity productEntity;
+  const ProductCardWidget({super.key,required this.productEntity});
 
   @override
   Widget build(BuildContext context) {
@@ -25,8 +26,8 @@ class ProductCardWidget extends StatelessWidget {
           ClipRRect(
             borderRadius: const BorderRadius.only(topLeft: Radius.circular(10),topRight: Radius.circular(10)),
             child: ImageWidget(
-              imageUrl: 'assets/logo.jpg',
-              isNetworkImage: false,
+              imageUrl: productEntity.images.isNotEmpty?productEntity.images.first:"",
+              isNetworkImage: true,
               height: Get.size.width*0.42,
               width: Get.size.width,
               imageBoxFit: 'cover',
@@ -45,7 +46,7 @@ class ProductCardWidget extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 Text(
-                   'abc',
+                   productEntity.name,
                   maxLines: 2,
                   style: Get.textTheme.bodyMedium?.merge(TextStyle(color: Get.theme.hintColor)),
                 ),
@@ -59,7 +60,7 @@ class ProductCardWidget extends StatelessWidget {
                     Row(
                       children: [
                         Ui.commonUi.getPrice(
-                          2000,
+                          productEntity.price,
                           style: Get.textTheme.bodyMedium?.merge(
                             TextStyle(
                               color: Get.theme.primaryColor,
@@ -80,7 +81,7 @@ class ProductCardWidget extends StatelessWidget {
                 ),
                 const SizedBox(height: 10),
                 Wrap(
-                  children: Ui.commonUi.getStarsList(5.0),
+                  children: Ui.commonUi.getStarsList(productEntity.averageRating),
                 ),
 
               ],
