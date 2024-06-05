@@ -9,7 +9,7 @@ import 'package:http/http.dart' as http;
 class APIManager {
 
   final http.Client client;
-  APIManager(this.client);
+  APIManager({required this.client});
 
 
 

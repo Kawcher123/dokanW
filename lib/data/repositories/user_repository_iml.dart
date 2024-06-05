@@ -1,10 +1,12 @@
+import 'package:dartz/dartz.dart';
+import 'package:dokan/core/exceptions/customExceptions.dart';
 import 'package:dokan/data/data_sources/remote/user_data_source.dart';
 import 'package:dokan/data/models/user_model.dart';
 import 'package:dokan/domain/entities/user_entity.dart';
 import 'package:dokan/domain/repositories/user_repository.dart';
 
 class UserRepositoryImpl implements UserRepository {
-  final UseDataSource userDataSource;
+  final UserDataSource userDataSource;
 
   UserRepositoryImpl({required this.userDataSource});
 
@@ -15,14 +17,19 @@ class UserRepositoryImpl implements UserRepository {
   }
 
   @override
-  Future<UserEntity> login(String email, String password) async {
-    final userModel = await userDataSource.login(email, password);
-    return UserEntity(
-      id: userModel.id,
-      name: userModel.name,
-      email: userModel.email,
-      token: userModel.token,
-    );
+  Future<Either<Failure,UserEntity>> login(String username, String password) async {
+    try {
+      final userModel = await userDataSource.login(username:username ,password: password);
+      return userModel;
+    } on BadRequestFailure {
+      return Left(BadRequestFailure('Failed to login'));
+    }
+    on UnauthorisedFailure {
+      return Left(UnauthorisedFailure('Unauthorized'));
+    }
+    catch (e) {
+      return Left(ServerFailure('Failed to login:$e'));
+    }
   }
 
   @override

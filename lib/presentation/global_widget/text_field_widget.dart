@@ -86,20 +86,9 @@ class TextFieldWidget extends StatelessWidget {
         ),
         if(labelText!=null||labelText!='')
         SizedBox(height: size.height*0.008,),
-        Container(
-          height: size.width*0.15,
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(10),
-            boxShadow: [
-              BoxShadow(
-                color:hasBorder==true?Get.theme.cardColor: Get.theme.dividerColor.withOpacity(0.2),
-                spreadRadius: 5,
-                blurRadius: 7,
-                offset: const Offset(0, 3),
-              ),
-            ],
-          ),
+        Material(
+          elevation: 5, // Add elevation for shadow effect
+          borderRadius: BorderRadius.circular(10),
           child: Center(
             child: TextFormField(
               controller: textcontroller,

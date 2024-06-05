@@ -1,3 +1,4 @@
+import 'package:dokan/domain/use_cases/user_local_usecase.dart';
 import 'package:dokan/presentation/screens/acount/views/acount_view.dart';
 import 'package:dokan/presentation/screens/home/views/home_view.dart';
 import 'package:dokan/routes/app_pages.dart';
@@ -6,6 +7,9 @@ import 'package:get/get.dart';
 
 class RootController extends GetxController with GetSingleTickerProviderStateMixin{
   //TODO: Implement RootController
+
+  final UserLocalUseCase userLocalUseCase;
+  RootController({required this.userLocalUseCase});
   final selectedIndex = 0.obs;
   final categoryDataLoaded = false.obs;
 

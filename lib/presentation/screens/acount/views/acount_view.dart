@@ -2,6 +2,8 @@ import 'package:dokan/presentation/common_ui/ui.dart';
 import 'package:dokan/presentation/global_widget/image_widget.dart';
 import 'package:dokan/presentation/screens/acount/widgets/account_link_widget.dart';
 import 'package:dokan/presentation/screens/acount/widgets/edit_account_widget.dart';
+import 'package:dokan/presentation/screens/root/controllers/root_controller.dart';
+import 'package:dokan/routes/app_pages.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
@@ -78,19 +80,38 @@ class AcountView extends GetView<AcountController> {
                 if(controller.isAccountExpanded.isTrue)
                   const EditAccountWidget(),
                 AccountLinkWidget(
-                  icon: Icon(Icons.lock, color: Get.theme.primaryColor),
+                  icon: Icon(Icons.lock_open, color: Get.theme.primaryColor),
                   text: const Text("Change Password"),
                   onTap: () {},
                 ),
                 AccountLinkWidget(
-                  icon: Icon(Icons.lock, color: Get.theme.primaryColor),
+                  icon: Icon(Icons.notifications_outlined, color: Get.theme.primaryColor),
                   text: const Text("Notification"),
                   onTap: () {},
                 ),
                 AccountLinkWidget(
-                  icon: Icon(Icons.lock, color: Get.theme.primaryColor),
+                  icon: Icon(Icons.favorite_border, color: Get.theme.primaryColor),
                   text: const Text("Wishlist"),
                   onTap: () {},
+                ),
+
+
+                controller.userLocalUseCase.getUserData()!=null?
+                AccountLinkWidget(
+                  icon: Icon(Icons.logout_outlined, color: Get.theme.primaryColor),
+                  text: const Text("Logout"),
+                  onTap: () {
+                    controller.userLocalUseCase.clearUserData();
+                    Get.find<RootController>().selectedIndex.value=0;
+                    Get.toNamed(Routes.LOGIN);
+                  },
+                ):
+                AccountLinkWidget(
+                  icon: Icon(Icons.logout_outlined, color: Get.theme.primaryColor),
+                  text: const Text("Login"),
+                  onTap: () {
+                    Get.toNamed(Routes.LOGIN);
+                  },
                 ),
               ],
             )),

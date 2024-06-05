@@ -185,7 +185,7 @@ class Ui {
     }
     try {
       if (myPrice == 0) {
-        return Text('-', style: style ?? Get.textTheme.subtitle2);
+        return Text('-', style: style ?? Get.textTheme.titleSmall);
       }
       return RichText(
         softWrap: false,
@@ -245,7 +245,11 @@ class Ui {
           color: color!,
         ));
   }
-
+   customDialogLoader() {
+    return Get.dialog(SpinKitDoubleBounce(
+      color: Get.theme.primaryColor,
+    ));
+  }
   Widget customSmallBox({double? size,double? height, Color? color, Widget? child, double? radius}) {
     return Container(
       width: size,

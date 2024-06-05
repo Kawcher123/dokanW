@@ -1,6 +1,7 @@
 
 import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.dart';
 import 'package:dokan/presentation/screens/root/controllers/root_controller.dart';
+import 'package:dokan/routes/app_pages.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -32,10 +33,31 @@ class BottomNavBarWidget extends GetWidget<RootController> {
         notchSmoothness: NotchSmoothness.softEdge,
         leftCornerRadius: 0,
         rightCornerRadius: 0,
-        onTap: (index) {controller.selectedIndex.value=index;},
+        onTap: (index) {
+          if(index==3 && controller.userLocalUseCase.getUserData()!=null)
+          {
+            controller.selectedIndex.value=index;
+          }
+          else
+          {
+            Get.toNamed(Routes.LOGIN);
+          }
+
+        },
         tabBuilder: (int index, bool isActive) {
           return InkResponse(
-            onTap: () {controller.selectedIndex.value=index;},
+            onTap: () {
+              if(index==3 && controller.userLocalUseCase.getUserData()!=null)
+                {
+                  controller.selectedIndex.value=index;
+                }
+              else
+                {
+                  Get.toNamed(Routes.LOGIN);
+                }
+
+
+              },
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [

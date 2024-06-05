@@ -1,3 +1,4 @@
+import 'package:dokan/presentation/Helper/form_validation_helper.dart';
 import 'package:dokan/presentation/global_widget/block_button_widget.dart';
 import 'package:dokan/presentation/global_widget/image_widget.dart';
 import 'package:dokan/presentation/global_widget/text_field_widget.dart';
@@ -10,7 +11,7 @@ import 'package:get/get.dart';
 import '../controllers/login_controller.dart';
 
 class LoginView extends GetView<LoginController> {
-   LoginView({Key? key}) : super(key: key);
+   const LoginView({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -55,18 +56,22 @@ class LoginView extends GetView<LoginController> {
 
 
                 TextFieldWidget(
-                  keyboardType: TextInputType.phone,
+                  keyboardType: TextInputType.emailAddress, // Set keyboard type to emailAddress
                   isFill: true,
                   fillColor: Get.theme.cardColor,
                   hintText: 'Email',
                   labelText: '',
                   initialValue: '',
                   onChanged: (v) {
-
+                    controller.username = v;
                   },
                   prefix: const Icon(CupertinoIcons.mail),
                   validator: (v) {
-                    return v!=null&&v.isEmpty ? 'This field cannot be empty' :v!.length < 11 || v.length > 11?'Invalid phone number': null;
+                    if (v == null || v.isEmpty) {
+                      return 'This field cannot be empty';
+                    }  else {
+                      return null;
+                    }
                   },
                 ),
 
@@ -80,12 +85,10 @@ class LoginView extends GetView<LoginController> {
                     controller.password = v;
                   },
                   validator: (v) {
-                    return v!.isEmpty
+                    return v==null || v.isEmpty
                         ? 'This field cannot be empty'
-                        : v.length!=4
-                        ? 'PIN must have 4 digits.'
-                        :!v.isNumericOnly
-                        ?'PIN should contain numeric value only.'
+                        : v.length<6
+                        ? 'Password cannot be less than 6 characters'
                         : null;
                   },
                   obscureText: controller.passObscure.value,
@@ -104,11 +107,11 @@ class LoginView extends GetView<LoginController> {
                 ),
                 BlockButtonWidget(
                   onPressed: () {
-                   Get.toNamed(Routes.ROOT);
-                    // if(controller.signInFormKey.currentState!.validate())
-                    // {
-                    //
-                    // }
+                   //Get.toNamed(Routes.ROOT);
+                    if(controller.signInFormKey.currentState!.validate())
+                    {
+                      controller.login();
+                    }
                   },
                   height: size.width*0.15,
                   width: size.width,
@@ -127,7 +130,7 @@ class LoginView extends GetView<LoginController> {
                 ),
                 GestureDetector(
                   onTap: () {
-                  Get.offAllNamed(Routes.SIGNUP);
+                  Get.toNamed(Routes.SIGNUP);
                   },
                   child: SizedBox(
                     height: size.height*0.06,

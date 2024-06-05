@@ -1,56 +1,67 @@
+import 'package:dartz/dartz.dart';
+import 'package:dokan/core/exceptions/customExceptions.dart';
+import 'package:dokan/data/data_sources/api_manager/api_manager.dart';
+import 'package:dokan/data/data_sources/api_manager/api_url.dart';
 import 'package:dokan/data/models/user_model.dart';
-import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-abstract class UseDataSource {
+abstract class UserDataSource {
   Future<void> signup(UserModel userModel);
-  Future<UserModel> login(String email, String password);
+  Future<Either<Failure, UserModel>> login({required String username,required String password});
   Future<void> updateUser(UserModel userModel);
 }
 
-class UseDataSourceImpl implements UseDataSource {
-  final http.Client client;
+class UserDataSourceImpl implements UserDataSource {
+  final APIManager apiManager;
 
-  UseDataSourceImpl({required this.client});
+  UserDataSourceImpl({required this.apiManager});
 
   @override
   Future<void> signup(UserModel userModel) async {
-    final response = await client.post(
-      Uri.parse('https://example.com/api/signup'),
-      headers: {'Content-Type': 'application/json'},
-      body: json.encode(userModel.toJson()),
+    final response = await apiManager.postAPICallWithHeader(
+      url: ApiUrl.signup,
+      param: jsonEncode(userModel.toJson()),
+      headerData: {
+        'Content-Type': 'application/json'
+      },
     );
-
-    if (response.statusCode != 201) {
-      throw Exception('Failed to signup user');
-    }
   }
 
   @override
-  Future<UserModel> login(String email, String password) async {
-    final response = await client.post(
-      Uri.parse('https://example.com/api/login'),
-      headers: {'Content-Type': 'application/json'},
-      body: json.encode({'email': email, 'password': password}),
-    );
-
-    if (response.statusCode != 200) {
-      throw Exception('Failed to login');
+  Future<Either<Failure,UserModel>> login({required String username,required String password}) async {
+    try {
+      final response = await apiManager.postAPICallWithHeader(
+        url: ApiUrl.login,
+        param: jsonEncode({
+          "username":username,
+          "password":password,
+        }),
+        headerData: {
+          'Content-Type': 'application/json'
+        },
+      );
+      return Right(UserModel.fromJson(response));
+    }
+    on BadRequestFailure {
+      return Left(BadRequestFailure('Failed to login'));
+    }
+    on UnauthorisedFailure {
+      return Left(UnauthorisedFailure('Unauthorized'));
+    }
+    catch (e) {
+      return Left(ServerFailure('Failed to login:$e'));
     }
 
-    return UserModel.fromJson(json.decode(response.body));
   }
 
   @override
   Future<void> updateUser(UserModel userModel) async {
-    final response = await client.post(
-      Uri.parse('https://example.com/api/update'),
-      headers: {'Content-Type': 'application/json'},
-      body: json.encode(userModel.toJson()),
+    final response = await apiManager.postAPICallWithHeader(
+      url: '${ApiUrl.updateUser}${userModel.id}',
+      param: userModel.toJson(),
+      headerData: {
+        'Content-Type': 'application/json'
+      },
     );
-
-    if (response.statusCode != 200) {
-      throw Exception('Failed to update user');
-    }
   }
 }

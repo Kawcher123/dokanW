@@ -1,5 +1,7 @@
 
 class ApiUrl {
-  static  String baseUrl = '';
-  static  String getRepoList({int page=1, String sort='stars'}) => '${baseUrl}search/repositories?q=Flutter&page=$page&per_page=10&sort=$sort';
+  static  String baseUrl = "https://apptest.dokandemo.com/wp-json/";
+  static String login="${baseUrl}jwt-auth/v1/token";
+  static String signup="${baseUrl}wp/v2/users/register";
+  static String updateUser="${baseUrl}wp/v2/users/";
 }
