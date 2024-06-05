@@ -18,17 +18,20 @@ class LoginView extends GetView<LoginController> {
     final Size size = MediaQuery.of(context).size;
     return Scaffold(
       backgroundColor: Get.theme.scaffoldBackgroundColor,
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+
+      ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 15.0),
         child: SingleChildScrollView(
           scrollDirection: Axis.vertical,
           child: Form(
             key: controller.signInFormKey,
-            autovalidateMode: AutovalidateMode.onUserInteraction,
             child: Column(
               children: [
                 SizedBox(
-                  height: size.height*0.2,
+                  height: size.height*0.12,
                 ),
 
                 ClipRRect(

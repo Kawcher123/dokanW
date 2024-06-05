@@ -4,8 +4,8 @@ import 'package:dokan/domain/entities/user_entity.dart';
 
 abstract class UserRepository {
 
-  Future<void> signup(UserEntity user);
+  Future<Either<Failure,bool>> signup(String username,String email,String pass);
   Future<Either<Failure,UserEntity>> login(String email, String password);
-  Future<void> updateUser(UserEntity user);
+  Future<Either<Failure,bool>> updateUser(String name,String email,String nick);
 
 }

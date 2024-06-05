@@ -15,7 +15,7 @@ class AcountBinding extends Bindings {
     Get.lazyPut<UserLocalRepository>(() => UserLocalRepositoryImpl(userLocalDataSource: Get.find()));
     Get.lazyPut(()=>UserLocalUseCase(repository: Get.find()));
     Get.lazyPut(
-          () => AcountController(userLocalUseCase: Get.find()),
+          () => AcountController(userLocalUseCase: Get.find(),updateUserUseCase: Get.find()),
     );
   }
 }

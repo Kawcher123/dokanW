@@ -50,10 +50,10 @@ class AcountView extends GetView<AcountController> {
 
            Column(
             children: [
-              const Text('Kawsar Ahmed',style: TextStyle(
+               Text(controller.userData?.name??'',style: const TextStyle(
                 fontSize: 20,
               ),),
-              Text('kawcherahmed43@gmail.com',style: TextStyle(
+              Text(controller.userData?.email??'',style: TextStyle(
                 color: Get.theme.disabledColor,
               ),),
             ],

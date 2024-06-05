@@ -18,7 +18,7 @@ class LoginBinding extends Bindings {
     Get.lazyPut<http.Client>(() => http.Client());
     Get.lazyPut(() => APIManager(client: Get.find()));
 
-    Get.lazyPut<UserDataSource>(() => UserDataSourceImpl(apiManager: Get.find()));
+    Get.lazyPut<UserDataSource>(() => UserDataSourceImpl(apiManager: Get.find(),userLocalRepository: Get.find()));
 
     Get.lazyPut<UserRepository>(() => UserRepositoryImpl(userDataSource: Get.find()));
 

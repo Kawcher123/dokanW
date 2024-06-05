@@ -1,4 +1,5 @@
 
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dokan/infrastructure/common_services/theme_service.dart';
@@ -330,6 +331,95 @@ class Ui {
       ),
     );
   }
-
+   showAwesomeDialog(String title, String description, Color color, VoidCallback onTap, context,
+      {bool showClose = false, bool isBarrierDismiss = true, double? width, String type = '', String okay = 'Okay'
+        , String close = 'Close', required VoidCallback onTapClose}) {
+    Size size = MediaQuery.of(context).size;
+    return AwesomeDialog(
+      context: context,
+      dialogType: type == 'success'
+          ? DialogType.success
+          : type == 'error'
+          ? DialogType.error
+          : type == 'warning'
+          ? DialogType.warning
+          : DialogType.noHeader,
+      borderSide: BorderSide(
+        color: Get.theme.primaryColor,
+        width: 1,
+      ),
+      btnOkColor: color ?? Colors.yellow.shade500,
+      width: size.width,
+      buttonsBorderRadius: const BorderRadius.all(
+        Radius.circular(25),
+      ),
+      dismissOnTouchOutside: isBarrierDismiss,
+      dismissOnBackKeyPress: false,
+      headerAnimationLoop: false,
+      animType: AnimType.bottomSlide,
+      title: title,
+      titleTextStyle: const TextStyle(
+        fontSize: 18,
+        color: Colors.black,
+        fontWeight: FontWeight.normal,
+      ),
+      desc: description,
+      descTextStyle: const TextStyle(
+        fontSize: 15,
+        color: Colors.black,
+        fontWeight: FontWeight.normal,
+      ),
+      showCloseIcon: false,
+      btnCancel: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          showClose
+              ? GestureDetector(
+            onTap:onTapClose?? () {
+              Get.back();
+            },
+            child: Container(
+              height: Get.size.width * 0.13,
+              width: Get.size.width * 0.3,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(30),
+                color: Colors.red,
+              ),
+              child: Center(
+                child: Text(
+                  close,
+                  textAlign: TextAlign.center,
+                  style: TextStyle(color: Colors.white),
+                ),
+              ),
+            ),
+          )
+              : Wrap(),
+          GestureDetector(
+            onTap: onTap,
+            child: Container(
+              height: Get.size.width * 0.13,
+              width: showClose ? Get.size.width * 0.3 : Get.size.width * 0.5,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(30),
+                color: Get.theme.primaryColor,
+              ),
+              child: Padding(
+                padding: EdgeInsets.all(5.0),
+                child: Center(
+                    child: Text(
+                      okay,
+                      style: TextStyle(color: Colors.white),
+                    )),
+              ),
+            ),
+          ),
+          const SizedBox(
+            height: 5,
+          ),
+        ],
+      ),
+    ).show();
+  }
 
 }

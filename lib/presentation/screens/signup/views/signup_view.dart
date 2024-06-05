@@ -16,17 +16,20 @@ class SignupView extends GetView<SignupController> {
     final Size size = MediaQuery.of(context).size;
     return Scaffold(
       backgroundColor: Get.theme.scaffoldBackgroundColor,
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+
+      ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 15.0),
         child: SingleChildScrollView(
           scrollDirection: Axis.vertical,
           child: Form(
             key: controller.signUpFormKey,
-            autovalidateMode: AutovalidateMode.onUserInteraction,
             child: Column(
               children: [
                 SizedBox(
-                  height: size.height*0.1,
+                  height: size.height*0.03,
                 ),
 
                 Stack(
@@ -43,13 +46,8 @@ class SignupView extends GetView<SignupController> {
                     ),
                   ],
                 ),
-                SizedBox(
-                  height: size.height*0.01,
-                ),
-                const Text(
-                  'Sign in to your account',
-                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.w600),
-                ),
+
+
                 SizedBox(
                   height: size.height*0.01,
                 ),
@@ -58,15 +56,16 @@ class SignupView extends GetView<SignupController> {
                   keyboardType: TextInputType.text,
                   isFill: true,
                   fillColor: Get.theme.cardColor,
-                  hintText: 'Name',
+                  hintText: 'Username',
                   labelText: '',
                   initialValue: '',
+                  prefix: const Icon(CupertinoIcons.person_alt),
                   onChanged: (v) {
-
+                    controller.username=v;
                   },
-                  prefix: const Icon(CupertinoIcons.mail),
+
                   validator: (v) {
-                    return v!=null&&v.isEmpty ? 'This field cannot be empty' :v!.length < 11 || v.length > 11?'Invalid phone number': null;
+                    return v!=null&&v.isEmpty ? 'This field cannot be empty' : null;
                   },
                 ),
 
@@ -79,11 +78,11 @@ class SignupView extends GetView<SignupController> {
                   labelText: '',
                   initialValue: '',
                   onChanged: (v) {
-
+                    controller.email=v;
                   },
                   prefix: const Icon(CupertinoIcons.mail),
                   validator: (v) {
-                    return v!=null&&v.isEmpty ? 'This field cannot be empty' :v!.length < 11 || v.length > 11?'Invalid phone number': null;
+                    return v!=null&&v.isEmpty ? 'This field cannot be empty' : null;
                   },
                 ),
 
@@ -94,15 +93,14 @@ class SignupView extends GetView<SignupController> {
                   labelText: '',
                   hintText: 'Password',
                   onChanged: (v) {
-
+                    controller.password=v;
                   },
                   validator: (v) {
                     return v!.isEmpty
                         ? 'This field cannot be empty'
-                        : v.length!=4
-                        ? 'PIN must have 4 digits.'
-                        :!v.isNumericOnly
-                        ?'PIN should contain numeric value only.'
+                        : v.length<6
+                        ? 'Password cannot be less than 6 characters'
+
                         : null;
                   },
                   obscureText: controller.passObscure.value,
@@ -129,10 +127,11 @@ class SignupView extends GetView<SignupController> {
                   validator: (v) {
                     return v!.isEmpty
                         ? 'This field cannot be empty'
-                        : v.length!=4
-                        ? 'PIN must have 4 digits.'
-                        :!v.isNumericOnly
-                        ?'PIN should contain numeric value only.'
+                        : v.length<6
+                        ? 'Password cannot be less than 6 characters'
+                        : v!=controller.password
+                        ? "Password doesn't match"
+
                         : null;
                   },
                   obscureText: controller.confirmPassObscure.value,
@@ -153,7 +152,7 @@ class SignupView extends GetView<SignupController> {
                   onPressed: () {
                     if(controller.signUpFormKey.currentState!.validate())
                     {
-
+                      controller.signup();
                     }
                   },
                   height: size.width*0.15,

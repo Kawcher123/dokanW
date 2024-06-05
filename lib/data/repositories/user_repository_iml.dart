@@ -11,30 +11,41 @@ class UserRepositoryImpl implements UserRepository {
   UserRepositoryImpl({required this.userDataSource});
 
   @override
-  Future<void> signup(UserEntity user) async {
-    final userModel = UserModel.fromEntity(user);
-    await userDataSource.signup(userModel);
+  Future<Either<Failure, bool>> signup(String username,String email,String pass) async {
+    try {
+      //final userModel = UserModel.fromEntity(user);
+      return await userDataSource.signup( username, email, pass);
+    } on BadRequestFailure {
+      return Left(BadRequestFailure('Failed to register'));
+    } catch (e) {
+      return Left(ServerFailure('Failed to register:$e'));
+    }
   }
 
   @override
-  Future<Either<Failure,UserEntity>> login(String username, String password) async {
+  Future<Either<Failure, UserEntity>> login(String username, String password) async {
     try {
-      final userModel = await userDataSource.login(username:username ,password: password);
+      final userModel = await userDataSource.login(username: username, password: password);
       return userModel;
     } on BadRequestFailure {
       return Left(BadRequestFailure('Failed to login'));
-    }
-    on UnauthorisedFailure {
+    } on UnauthorisedFailure {
       return Left(UnauthorisedFailure('Unauthorized'));
-    }
-    catch (e) {
+    } catch (e) {
       return Left(ServerFailure('Failed to login:$e'));
     }
   }
 
   @override
-  Future<void> updateUser(UserEntity user) async {
-    final userModel = UserModel.fromEntity(user);
-    await userDataSource.updateUser(userModel);
+  Future<Either<Failure, bool>> updateUser(String name, String email, String nick) async {
+    try {
+      return await userDataSource.updateUser(name, email, nick);
+    } on BadRequestFailure {
+      return Left(BadRequestFailure('Failed to update'));
+    } on UnauthorisedFailure {
+      return Left(UnauthorisedFailure('Unauthorized'));
+    } catch (e) {
+      return Left(ServerFailure('Failed to update:$e'));
+    }
   }
 }

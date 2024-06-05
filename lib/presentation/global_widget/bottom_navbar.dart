@@ -34,27 +34,29 @@ class BottomNavBarWidget extends GetWidget<RootController> {
         leftCornerRadius: 0,
         rightCornerRadius: 0,
         onTap: (index) {
-          if(index==3 && controller.userLocalUseCase.getUserData()!=null)
+          if(index==3 && controller.userLocalUseCase.getUserData()==null)
           {
-            controller.selectedIndex.value=index;
+            Get.toNamed(Routes.LOGIN);
           }
           else
           {
-            Get.toNamed(Routes.LOGIN);
+            controller.selectedIndex.value=index;
+
           }
 
         },
         tabBuilder: (int index, bool isActive) {
           return InkResponse(
             onTap: () {
-              if(index==3 && controller.userLocalUseCase.getUserData()!=null)
-                {
-                  controller.selectedIndex.value=index;
-                }
+              if(index==3 && controller.userLocalUseCase.getUserData()==null)
+              {
+                Get.toNamed(Routes.LOGIN);
+              }
               else
-                {
-                  Get.toNamed(Routes.LOGIN);
-                }
+              {
+                controller.selectedIndex.value=index;
+
+              }
 
 
               },
