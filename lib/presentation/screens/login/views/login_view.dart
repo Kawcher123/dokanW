@@ -37,7 +37,7 @@ class LoginView extends GetView<LoginController> {
                 ClipRRect(
                   borderRadius: BorderRadius.circular(10),
                   child: ImageWidget(
-                    imageUrl: 'assets/logo.jpg',
+                    imageUrl: 'assets/logo.png',
                     height:  size.width*0.35,
                     width: size.width*0.35,
                     imageBoxFit: 'contain',

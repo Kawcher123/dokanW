@@ -33,7 +33,7 @@ class AcountView extends GetView<AcountController> {
                 ClipRRect(
                   borderRadius: BorderRadius.circular(100),
                   child: ImageWidget(
-                    imageUrl: 'assets/logo.jpg',
+                    imageUrl: 'assets/logo.png',
                     height:  Get.size.width*0.35,
                     width: Get.size.width*0.35,
                     imageBoxFit: 'contain',
