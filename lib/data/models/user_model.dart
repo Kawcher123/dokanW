@@ -59,4 +59,14 @@ class UserModel extends UserEntity {
       token: user.token,
     );
   }
+
+
+  factory UserModel.fromUpdateJson(Map<String, dynamic> json) {
+    return UserModel(
+      id: json['id'].toString(),
+      name: json['name']??'',
+      email: json['email']??'',
+      nickName: json['nickname']??'',
+    );
+  }
 }

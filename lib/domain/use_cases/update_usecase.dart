@@ -8,7 +8,7 @@ class UpdateUserUseCase {
 
   UpdateUserUseCase({required this.repository});
 
-  Future<Either<Failure,bool>> updateUserData(String name,String email,String nick) async {
+  Future<Either<Failure,UserEntity>> updateUserData(String name,String email,String nick) async {
     return await repository.updateUser( name, email, nick);
   }
 }

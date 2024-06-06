@@ -37,7 +37,7 @@ class UserRepositoryImpl implements UserRepository {
   }
 
   @override
-  Future<Either<Failure, bool>> updateUser(String name, String email, String nick) async {
+  Future<Either<Failure, UserEntity>> updateUser(String name, String email, String nick) async {
     try {
       return await userDataSource.updateUser(name, email, nick);
     } on BadRequestFailure {

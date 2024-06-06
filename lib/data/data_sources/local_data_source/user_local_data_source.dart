@@ -18,7 +18,7 @@ class UserLocalDataSourceImpl implements UserLocalDataSource{
     print('UserLocalDataSourceImpl.saveUser:${user.id}');
     print('UserLocalDataSourceImpl.saveUser:${user.token}');
     box.write('user', user.toJson());
-    getUser();
+
   }
 
   @override

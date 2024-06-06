@@ -13,6 +13,7 @@ final ProductEntity productEntity;
 
   @override
   Widget build(BuildContext context) {
+    final Size size = MediaQuery.of(context).size;
     return Container(
        padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
       decoration: BoxDecoration(
@@ -28,13 +29,13 @@ final ProductEntity productEntity;
             child: ImageWidget(
               imageUrl: productEntity.images.isNotEmpty?productEntity.images.first:"",
               isNetworkImage: true,
-              height: Get.size.width*0.42,
-              width: Get.size.width,
+              height: size.width*0.42,
+              width: size.width,
               imageBoxFit: 'cover',
             ),
           ),
           Container(
-            height: Get.size.height*0.12,
+            height: size.height*0.12,
             padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 10),
             width: double.infinity,
             decoration: BoxDecoration(

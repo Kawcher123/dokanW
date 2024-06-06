@@ -13,6 +13,7 @@ class BottomNavBarWidget extends GetWidget<RootController> {
 
   @override
   Widget build(BuildContext context) {
+    final Size size = MediaQuery.of(context).size;
     return Obx(() => Container(
       decoration: BoxDecoration(
         boxShadow: [
@@ -24,7 +25,7 @@ class BottomNavBarWidget extends GetWidget<RootController> {
         ],
       ),
       child: AnimatedBottomNavigationBar.builder(
-        height: Get.width * .18,
+        height: size.width * .18,
         notchMargin: 4.0,
         hideAnimationController: controller.fabAnimationController,
         activeIndex: controller.selectedIndex.value,

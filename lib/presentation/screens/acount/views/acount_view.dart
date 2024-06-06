@@ -48,16 +48,16 @@ class AcountView extends GetView<AcountController> {
             height: Get.size.height*0.01,
           ),
 
-           Column(
-            children: [
-               Text(controller.userData?.name??'',style: const TextStyle(
-                fontSize: 20,
-              ),),
-              Text(controller.userData?.email??'',style: TextStyle(
-                color: Get.theme.disabledColor,
-              ),),
-            ],
-          ),
+           Obx(() => Column(
+             children: [
+               Text(controller.userData.value?.name??'',style: const TextStyle(
+                 fontSize: 20,
+               ),),
+               Text(controller.userData.value?.email??'',style: TextStyle(
+                 color: Get.theme.disabledColor,
+               ),),
+             ],
+           )),
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
             margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),

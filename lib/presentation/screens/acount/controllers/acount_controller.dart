@@ -15,7 +15,7 @@ class AcountController extends GetxController {
 
   final isAccountExpanded = false.obs;
 
-  UserEntity? userData = UserEntity();
+  Rx<UserEntity?> userData = UserEntity().obs;
 
   late String name;
   late String email;
@@ -26,7 +26,7 @@ class AcountController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    userData = userLocalUseCase.getUserData();
+    userData.value = userLocalUseCase.getUserData();
   }
 
   @override
@@ -47,25 +47,48 @@ class AcountController extends GetxController {
       (failure) {
         if (failure is CacheFailure) {
           print('Cache Error: ${failure.message}');
+          Ui.commonUi.showAwesomeDialog('Error', "Failed to update data.", Colors.green, () {}, Get.context, onTapClose: () {
+            Get.back();
+            Get.back();
+          }, type: 'error');
         } else if (failure is ServerFailure) {
           print('Server Error: ${failure.message}');
+          Ui.commonUi.showAwesomeDialog('Error', "Failed to update data.", Colors.green, () {}, Get.context, onTapClose: () {
+            Get.back();
+            Get.back();
+          }, type: 'error');
         } else {
           print('Unknown Error');
-        }
-      },
-      (resp) {
-        if (resp) {
-          Ui.commonUi.showAwesomeDialog('Success', "User data updated successfully.", Colors.green, () {}, Get.context, onTapClose: () {
-            Get.back();
-            Get.back();
-          }, type: 'success');
-        } else {
           Ui.commonUi.showAwesomeDialog('Error', "Failed to update data.", Colors.green, () {}, Get.context, onTapClose: () {
             Get.back();
             Get.back();
           }, type: 'error');
         }
       },
+      (resp) {
+        print('LoginController.login:${resp.token}');
+        print('LoginController.login:${resp.id}');
+         saveUpdatedDataInLocally(resp);
+          Ui.commonUi.showAwesomeDialog('Success', "User data updated successfully.", Colors.green, () {
+            Get.back();
+            Get.back();
+          }, Get.context, onTapClose: () {
+
+          }, type: 'success');
+
+      },
     );
+  }
+
+  void saveUpdatedDataInLocally(UserEntity resp) {
+      String? token =userLocalUseCase.getUserData()?.token;
+    UserEntity userEntity=UserEntity(
+      id: resp.id,
+      name: resp.name,
+      email: resp.email,
+      token: token,
+    );
+     userLocalUseCase.saveUserDataLocally(userEntity);
+      userData.value = userLocalUseCase.getUserData();
   }
 }

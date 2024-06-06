@@ -10,7 +10,7 @@ import 'package:dokan/domain/repositories/user_local_repository.dart';
 abstract class UserDataSource {
   Future<Either<Failure,bool>>  signup(String username,String email,String pass);
   Future<Either<Failure, UserModel>> login({required String username,required String password});
-  Future<Either<Failure,bool>> updateUser(String name,String email,String nick);
+  Future<Either<Failure,UserModel>> updateUser(String name,String email,String nick);
 }
 
 class UserDataSourceImpl implements UserDataSource {
@@ -82,7 +82,7 @@ class UserDataSourceImpl implements UserDataSource {
   }
 
   @override
-  Future<Either<Failure,bool>> updateUser(String name,String email,String nick) async {
+  Future<Either<Failure,UserModel>> updateUser(String name,String email,String nick) async {
     try {
       final String? token=userLocalRepository.getUser()?.token;
       final String? id=userLocalRepository.getUser()?.id;
@@ -101,13 +101,7 @@ class UserDataSourceImpl implements UserDataSource {
         },
       );
       print('UserDataSourceImpl.updateUser:${response}');
-      if(response.containsKey('id')){
-        return const Right(true);
-      }
-      else
-        {
-          return const Right(false);
-        }
+    return Right(UserModel.fromUpdateJson(response));
     }   on BadRequestFailure {
       return Left(BadRequestFailure('Failed to login'));
     }
