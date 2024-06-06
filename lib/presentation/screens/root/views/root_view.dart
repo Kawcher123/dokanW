@@ -11,7 +11,7 @@ class RootView extends GetView<RootController> {
   @override
   Widget build(BuildContext context) {
     return Obx(() => Scaffold(
-      //
+        resizeToAvoidBottomInset: false,
         extendBody: true,
         body:
         controller.currentPage,

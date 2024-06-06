@@ -59,16 +59,16 @@ class LoginView extends GetView<LoginController> {
 
 
                 TextFieldWidget(
-                  keyboardType: TextInputType.emailAddress, // Set keyboard type to emailAddress
+                  keyboardType: TextInputType.text, // Set keyboard type to emailAddress
                   isFill: true,
                   fillColor: Get.theme.cardColor,
-                  hintText: 'Email',
+                  hintText: 'Username',
                   labelText: '',
                   initialValue: '',
                   onChanged: (v) {
                     controller.username = v;
                   },
-                  prefix: const Icon(CupertinoIcons.mail),
+                  prefix: const Icon(CupertinoIcons.person_alt),
                   validator: (v) {
                     if (v == null || v.isEmpty) {
                       return 'This field cannot be empty';
@@ -79,7 +79,7 @@ class LoginView extends GetView<LoginController> {
                 ),
 
                 Obx(() => TextFieldWidget(
-                  keyboardType:  TextInputType.phone,
+                  keyboardType:  TextInputType.text,
                   isFill: true,
                   fillColor: Get.theme.scaffoldBackgroundColor,
                   labelText: '',
